@@ -3,20 +3,24 @@
 const GROUPS = [
   { type_id: 'movie', type_name: '电影' },
   { type_id: 'tv', type_name: '电视剧' },
-  { type_id: 'variety', type_name: '综艺' }
+  { type_id: 'variety', type_name: '综艺' },
+  { type_id: 'anime', type_name: '动漫' }
 ];
 const UA = 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 Chrome/128.0.0.0 Mobile Safari/537.36';
+// A factory gives each configured site its own API, type IDs and login-free state.
+export default function createSpider() {
 let settings = {};
 
 function genres(group) { return (settings.genres || {})[group] || []; }
+function groups() { return GROUPS.filter(group => genres(group.type_id).length); }
 function allowed(item) {
   const id = String(item.type_id || '');
   const name = String(item.type_name || '');
-  return GROUPS.some(group => genres(group.type_id).some(g => String(g.v) === id || g.n === name));
+  return groups().some(group => genres(group.type_id).some(g => id ? String(g.v) === id : g.n === name));
 }
 function number(value) { return Math.max(1, Math.min(100000, parseInt(value, 10) || 1)); }
 function fail(error, list) {
-  return JSON.stringify({ list: list || [], page: 1, pagecount: 1, msg: '备用线路暂时无法获取，请切换央视公开片库。' });
+  return JSON.stringify({ list: list || [], page: 1, pagecount: 1, msg: '这条线路暂时无法获取，请切换其他片库。' });
 }
 function request(params) {
   if (!/^https:\/\//.test(settings.api || '')) throw new Error('HTTPS API required');
@@ -45,20 +49,38 @@ function validMedia(url) {
   return /^https?:\/\//i.test(url) && /\.(m3u8|mp4)([?#]|$)/i.test(url);
 }
 
-export default {
+return {
   init(ext) {
     settings = typeof ext === 'string' ? JSON.parse(ext || '{}') : (ext || {});
     return JSON.stringify({});
   },
   home() {
     const filters = {};
-    GROUPS.forEach(group => {
+    groups().forEach(group => {
       filters[group.type_id] = [{ key: 'genre', name: '类型', value: genres(group.type_id) }];
     });
-    return JSON.stringify({ class: GROUPS, filters: filters });
+    return JSON.stringify({ class: groups(), filters: filters });
   },
   homeVod() {
-    try { return pageResult(request({ ac: 'detail', pg: 1 }), 1); }
+    try {
+      const result = request({ ac: 'detail', pg: 1 });
+      let items = result.list.filter(allowed);
+      if (items.length < 8 && genres('movie').length) {
+        // Sources may fill the newest page with short-drama categories outside this configuration.
+        // Keep useful newest items and add one movie page; a failed supplement preserves the first page.
+        try {
+          const extra = request({ ac: 'detail', t: genres('movie')[0].v, pg: 1 });
+          const seen = {};
+          items = items.concat(extra.list.filter(allowed)).filter(item => {
+            const id = String(item.vod_id);
+            if (seen[id]) return false;
+            seen[id] = true;
+            return true;
+          }).slice(0, 24);
+        } catch (e) {}
+      }
+      return pageResult({ ...result, list: items }, 1);
+    }
     catch (e) { return fail(e); }
   },
   category(tid, pg, filter, extend) {
@@ -75,7 +97,7 @@ export default {
       if (!/^\d+$/.test(String(id))) throw new Error('Invalid ID');
       const result = request({ ac: 'detail', ids: String(id) });
       const item = result.list.filter(allowed)[0];
-      if (!item) return JSON.stringify({ list: [], msg: '这个条目不在电影、电视剧、综艺范围内。' });
+      if (!item) return JSON.stringify({ list: [], msg: '这个条目不在已配置分类范围内。' });
       const sources = String(item.vod_play_from || '').split('$$$');
       const playlists = String(item.vod_play_url || '').split('$$$');
       const from = [], urls = [];
@@ -105,9 +127,10 @@ export default {
   },
   play(flag, id) {
     if (!validMedia(String(id))) return JSON.stringify({ url: '', msg: '播放链接格式不支持，请换源。' });
-    return JSON.stringify({ parse: 0, url: String(id) });
+    return JSON.stringify({ parse: 0, url: String(id), header: { 'User-Agent': UA } });
   },
   sniffer() { return false; },
   isVideo(url) { return validMedia(String(url || '')); },
   destroy() { settings = {}; }
 };
+}

@@ -1,1 +1,4 @@
 https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json
+
+仓库：
+https://github.com/qweweqwq/ok-tvbox
