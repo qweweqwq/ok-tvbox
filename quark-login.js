@@ -3,7 +3,7 @@
 import { pngQr } from './qr.js';
 
 const STORE = 'personal_quark';
-const SITE = 'personal_quark';
+const SITE = 'personal_quark_v2';
 const API = 'https://drive-pc.quark.cn/1/clouddrive/';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) quark-cloud-drive/3.0.1 Chrome/100.0.4896.160 Electron/18.3.5.12-a038f7b798 Safari/537.36 Channel/pckk_other_ch';
 // CAS web QR polling rejects the desktop client's UA, even for a freshly created token.

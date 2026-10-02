@@ -977,10 +977,10 @@
       ]
     },
     {
-      "key": "personal_quark",
-      "name": "夸克网盘｜扫码登录·待验证",
+      "key": "personal_quark_v2",
+      "name": "夸克网盘｜登录修复版",
       "type": 3,
-      "api": "./quark.js",
+      "api": "./quark-login.js",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 0,
