@@ -1,0 +1,36 @@
+{
+  "verified_at": "2026-10-02T20:00:12.282787+08:00",
+  "repository": "https://github.com/qweweqwq/ok-tvbox",
+  "config_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json",
+  "passed": true,
+  "files": [
+    {
+      "file": "config.json",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json",
+      "status": 200,
+      "bytes": 1943,
+      "sha256": "0edb5a039b128c386c6486d80063374a5d892f8cfbb841e3ead7fdf7a5de6f4f",
+      "identical_to_local": true,
+      "authentication_required": false
+    },
+    {
+      "file": "cctv.js",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/cctv.js",
+      "status": 200,
+      "bytes": 12330,
+      "sha256": "8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2",
+      "identical_to_local": true,
+      "authentication_required": false
+    },
+    {
+      "file": "resources.js",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/resources.js",
+      "status": 200,
+      "bytes": 5165,
+      "sha256": "fc86d250801dea8912916e83c7e854d960ceeeace746c1fe7eff8271bac721b5",
+      "identical_to_local": true,
+      "authentication_required": false
+    }
+  ],
+  "scope": "Public anonymous HTTP and exact file content; installation in user OK影视 app not tested"
+}

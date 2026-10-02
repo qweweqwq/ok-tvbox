@@ -1,0 +1,38 @@
+OK影视个人接口 · 核验记录
+日期：2026年10月2日，北京时间
+
+已完成
+1. 核对 okcaptain/TV 公开 release 分支：type 3、.js 源、QuickJS 默认导出、req.content 与各回调方法契约。
+2. config.json 可解析；同目录的 cctv.js 和 resources.js 语法通过检查。
+3. 脚本回调用实际接口响应验证：分类、列表、详情、播放、搜索均返回 App 所需 JSON 字符串。央视流程做了现场读取与响应重放；备用源验证了三类列表、详情和直连播放链接，以及类别排除和异常返回。
+4. 两个片库的电影、电视剧、综艺各抽查一项，实际下载了播放清单和64 KiB视频片段，并核对视频容器。备用源片段另识别为 H.264 视频/AAC 音频。
+
+六项网络抽验
+央视电影：电影《电影先锋》，官方点播页和HLS可读，片段返回206，video/MP2T。
+央视电视剧：《爱在山海间》，当前接口9集，首集HLS可读，片段返回206，video/MP2T。
+央视综艺：《非遗里的中国》，当前接口48期，样本HLS可读，片段返回206，video/MP2T。
+备用电影：《狂怒者：荣誉之战》，播放清单200，片段206，H.264/AAC。
+备用电视剧：《征途2026》，样本播放清单200，片段206，H.264/AAC。
+备用综艺：《密室大逃脱8大神版》20261002Plus版，播放清单200，片段206，H.264/AAC。
+
+核验边界
+这次验证包含代码兼容约定、实际接口数据和小段视频，不代表整部看完、全库可播，或已在你的手机/电视OK影视中导入播放。
+测试发现部分旧视频404；另一个候选来源出现地域403，未加入最终配置。各来源可随时变更或限制地区。
+正式 GitHub 原始链接已完成公开无认证访问检查：config.json、cctv.js、resources.js 全部返回 HTTP 200，与本地文件逐字节一致；配置中的相对脚本链接均正确。详细时间和文件SHA-256见《公网核验.json》。
+正式接口：https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json
+
+来源与格式依据
+OK影视源码：https://github.com/okcaptain/TV
+JS桥接：https://github.com/okcaptain/TV/blob/release/quickjs/src/main/assets/js/lib/spider.js
+央视点播页：https://tv.cctv.com/
+央视电影检索：https://search.cctv.com/
+央视数据接口：https://api.cntv.cn/
+备用来源帮助页：https://bfzy.tv/helps/
+备用公开API：https://bfzyapi.com/api.php/provide/vod/
+
+配置及两个JS脚本为本次创建；没有把第三方现成接口配置或可执行JAR/APK整体打包。
+
+文件校验值（SHA-256）
+config.json: 0edb5a039b128c386c6486d80063374a5d892f8cfbb841e3ead7fdf7a5de6f4f
+cctv.js: 8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2
+resources.js: fc86d250801dea8912916e83c7e854d960ceeeace746c1fe7eff8271bac721b5
