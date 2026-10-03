@@ -977,10 +977,10 @@
       ]
     },
     {
-      "key": "personal_quark_web",
+      "key": "personal_quark_web4",
       "name": "夸克网盘｜网页登录",
       "type": 3,
-      "api": "./quark-web.js",
+      "api": "./quark-web4.js",
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 0,

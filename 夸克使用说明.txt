@@ -8,14 +8,14 @@
 
 手机版5.1.5登录
 1. 在OK影视“设置→点播”中，将接口地址换成下面的刷新地址并重新加载：
-https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web3
+https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web4
 2. 切换到“夸克网盘｜网页登录”，打开“夸克登录说明”。
 3. 详情第一行就是本机浏览器地址。复制完整地址，在这部手机的浏览器里打开，保持OK影视在后台运行。这个地址只连接当前手机，无需同一Wi-Fi或局域网。
 4. 网页会显示二维码及“复制官方授权链接”。点复制后，把官方授权链接粘贴到已登录账号的夸克浏览器App地址栏，打开并确认登录。不要只在普通浏览器里打开官方链接；它可能跳到下载页而不完成授权。
 5. 回到OK影视，点击“已扫码，检查登录”。看到“已登录”后再打开“我的夸克”。
 
 本机网页地址通常是：
-http://127.0.0.1:9978/proxy?do=js&siteKey=personal_quark_web&op=entry
+http://127.0.0.1:9978/proxy?do=js&siteKey=personal_quark_web4&op=entry
 端口以“夸克登录说明”详情第一行为准。必须在运行OK影视的这台设备上打开；127.0.0.1不会连接到另一台手机或电视。
 
 其他设备扫码与电视登录
@@ -52,4 +52,4 @@ https://github.com/jadehh/TVSpider/blob/main/lib/quark_api.js
 https://github.com/OP404OP/quarkdownloaderpro/blob/main/src-tauri/src/quark_client.rs
 二维码使用Nayuki的MIT许可编码库，许可已保留于qr.js中。
 
-本次网页显示核验：真实Chrome浏览器以390×844手机尺寸打开脚本提供的本机页面，确认二维码完整显示、刷新、等待提示、官方授权链接和退出操作正常（显示测试采用模拟CAS响应）。新quark-web.js另通过8次真实官方CAS联网请求和26项离线入口/刷新/复制检查。上述结果仍不等于你的Android手机实机授权或播放测试。
+本次网页显示核验：真实Chrome浏览器以390×844手机尺寸打开脚本提供的本机页面，确认二维码完整显示、刷新、等待提示、官方授权链接和退出操作正常（显示测试采用模拟CAS响应）。新quark-web4.js另通过8次真实官方CAS联网请求和26项离线入口/刷新/复制检查。上述结果仍不等于你的Android手机实机授权或播放测试。

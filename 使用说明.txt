@@ -2,7 +2,7 @@ OK影视个人接口 · 扩展版
 制作日期：2026年10月2日
 你的使用版本：电视版5.1.5、手机版5.1.5。
 接口地址：https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json
-夸克网页登录版更新地址：https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web3
+夸克网页登录版更新地址：https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web4
 
 8个免登录片库：最大、魔都、暴风、红牛、光速、虎牙、360、央视公开片库。
 都能选择电影、电视剧、综艺；部分片库新增动漫。
