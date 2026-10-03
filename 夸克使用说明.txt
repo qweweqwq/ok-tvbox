@@ -52,4 +52,4 @@ https://github.com/jadehh/TVSpider/blob/main/lib/quark_api.js
 https://github.com/OP404OP/quarkdownloaderpro/blob/main/src-tauri/src/quark_client.rs
 二维码使用Nayuki的MIT许可编码库，许可已保留于qr.js中。
 
-本次网页显示核验：真实Chrome浏览器以390×844手机尺寸打开脚本提供的本机页面，确认二维码完整显示、刷新、等待提示、官方授权链接和退出操作正常（显示测试采用模拟CAS响应）。新quark-web.js另通过8次真实官方CAS联网请求和25项离线入口/刷新/复制检查。上述结果仍不等于你的Android手机实机授权或播放测试。
+本次网页显示核验：真实Chrome浏览器以390×844手机尺寸打开脚本提供的本机页面，确认二维码完整显示、刷新、等待提示、官方授权链接和退出操作正常（显示测试采用模拟CAS响应）。新quark-web.js另通过8次真实官方CAS联网请求和26项离线入口/刷新/复制检查。上述结果仍不等于你的Android手机实机授权或播放测试。

@@ -406,6 +406,9 @@ function proxy(params) {
     if (params.op === 'entry') {
       // A short, stable entry URL for this device. LAN access still requires the private nonce.
       if (!/^(?:127\.0\.0\.1|localhost)(?::\d+)?$/i.test(String(params.host || ''))) return [403, 'text/plain; charset=utf-8', '请在运行 OK影视的同一部手机上打开此地址。', headers];
+      // NanoHTTPD supplies the actual socket address after parsing request headers.
+      const peer = String(params['remote-addr'] || params['http-client-ip'] || '').toLowerCase();
+      if (['127.0.0.1', '::1', '0:0:0:0:0:0:0:1', '::ffff:127.0.0.1'].indexOf(peer) < 0) return [403, 'text/plain; charset=utf-8', '请在本机浏览器打开，其他设备请使用详情中的带授权码地址。', headers];
       const origin = String(params.origin || '');
       if (origin && origin !== 'http://' + params.host) return [403, 'text/plain; charset=utf-8', '请在浏览器地址栏直接打开登录页面。', headers];
       return [200, 'text/html; charset=utf-8', loginHtml(authNonce()), headers];
