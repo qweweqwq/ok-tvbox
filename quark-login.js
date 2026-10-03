@@ -135,14 +135,16 @@ function pollLogin(generation) {
   const res = readJson('https://uop.quark.cn/cas/ajax/getServiceTicketByQrcodeToken?client_id=532&v=1.2&token=' + enc(token) + '&request_id=' + uuid() + '&__t=' + Date.now(), { headers: AUTH_HEADERS }, false);
   const ticket = res.data && res.data.members && res.data.members.service_ticket;
   if (res.message === 'ok' && ticket) {
-    const response = request('https://pan.quark.cn/account/info?st=' + enc(ticket) + '&lw=scan', { headers: { Referer: 'https://pan.quark.cn/' } }, false);
+    const response = request('https://pan.quark.cn/account/info?st=' + enc(ticket) + '&lw=scan', { headers: AUTH_HEADERS }, false);
+    const account = JSON.parse(response.content);
+    if (account.success === false) throw new Error('夸克未接受本次授权，请刷新二维码重试（' + String(account.code || '授权交换失败').replace(/[^A-Za-z0-9:_-]/g, '').slice(0, 60) + '）');
     let cookie = mergeCookie('', response.headers);
     if (!/(?:^|;\s*)__pus=/.test(cookie)) throw new Error('夸克未返回有效授权，请刷新二维码重试');
     put('cookie', cookie);
     put('session_id', Date.now().toString(36) + Math.random().toString(36).slice(2));
     remove('login_verified');
     // Official web and drive requests can refresh __puus. Keep all official cookies.
-    try { request('https://pan.quark.cn/list', {}, true); } catch (_) {}
+    try { request('https://pan.quark.cn/list', { headers: AUTH_HEADERS }, true); } catch (_) {}
     ownFiles('0', 1);
     remove('qr_token'); remove('qr_time'); remove('qr_generation');
     return { state: 'ok', message: '已登录，请返回 OK影视刷新片库' };
@@ -154,7 +156,7 @@ function pollLogin(generation) {
 
 function menu() {
   return [
-    row('login', '夸克登录与状态', get('login_verified') === '1' ? '本机已登录；可查看或退出' : get('cookie') ? '授权信息已存本机，仍需验证' : '先扫码或在本机授权 · 登录修复版'),
+    row('login', '打开夸克登录说明', get('login_verified') === '1' ? '本机已登录；可查看或退出' : get('cookie') ? '授权信息已存本机，仍需验证' : '二维码在独立网页显示；手机版先打开网页登录'),
     row('login_check', '已扫码，检查登录', '在夸克 App 确认授权后，点击这里完成本机登录'),
     folderRow({ kind: 'mine', folder: '0', title: '我的夸克网盘' }, '我的夸克网盘', '打开自己的文件夹和视频'),
     row('help', '夸克搜索与播放说明', '搜索公开分享；播放时可能需要转存')
@@ -260,11 +262,12 @@ function detail(id) {
       const k = authNonce();
       qrToken();
       const page = pathUrl('login', false, { k });
+      const localPage = pathUrl('entry', true);
       const image = pathUrl('qr', true, { k, g: get('qr_generation'), t: Date.now() });
-      const state = get('cookie') ? '本机已保存登录信息。电视和手机需各自登录。' : '网盘入口待设备验证。用已登录的夸克 App 扫描图片，并在手机确认授权。';
-      const content = state + '\n扫码或在本机确认授权后，返回本片库点击“已扫码，检查登录”。\n手机版：在这部手机的浏览器打开下面的地址，再点“在本机打开夸克授权”。\n电视版：手机和电视连接同一 Wi-Fi，再用手机浏览器打开下面的地址。\n' + page + '\n授权只保存在当前 OK影视 App，不会上传 GitHub。';
+      const content = localPage + '\n手机版：复制第一行地址到本机浏览器，可看到完整二维码。保持 OK影视打开。网页登录有官方授权链接，请用已登录的夸克浏览器打开它，或用另一台设备上的夸克扫码。\n电视版：手机和电视连接同一 Wi-Fi，用手机浏览器打开：\n' + page + '\n确认授权后返回本片库点击“已扫码，检查登录”。电视和手机各自保存登录信息。';
       const vod = infoVod(id, '夸克登录与状态', content, image);
-      vod.vod_play_from = '授权操作'; vod.vod_play_url = '已扫码，检查登录$login_check';
+      // This is a login instruction page, not a playable episode. Autoplay can hide the QR artwork.
+      vod.vod_play_from = ''; vod.vod_play_url = '';
       return json({ list: [vod] });
     }
     if (id === 'login_check') {
@@ -353,36 +356,42 @@ function loginHtml(k) {
   const endpoint = op => base.replace('&op=', '&op=' + op);
   return `<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>夸克本机登录</title>
 <style>body{font:18px sans-serif;max-width:520px;margin:32px auto;padding:20px;color:#253047}img{display:block;max-width:100%;width:320px;margin:20px auto}button{font-size:18px;padding:12px;margin:8px}p{line-height:1.6}#state{min-height:56px}</style>
-<h2>夸克本机登录</h2><p>手机上可直接点击下方链接，在夸克中确认授权。也可用另一台设备扫码。授权保存在当前 OK影视 App。</p>
-<img id="qr" alt="夸克登录二维码"><p><a id="open" target="_blank" rel="noreferrer">在本机打开夸克授权</a></p><p id="state">正在生成二维码…</p>
+<h2>夸克本机登录</h2><p>保持 OK影视打开。请用夸克扫描二维码并确认授权；同一部手机可将下方授权链接复制到已登录的夸克浏览器地址栏打开。</p>
+<img id="qr" alt="夸克登录二维码"><p><a id="open" target="_blank" rel="noreferrer">官方授权链接（请在夸克浏览器打开）</a></p><button id="copy" disabled>复制官方授权链接</button><p id="copyState"></p><p id="state">正在生成二维码…</p>
 <button id="refresh">刷新二维码</button><button id="logout">退出本机登录</button>
 <script>
 const E=${json(endpoint(''))};
-const qr=document.querySelector('#qr'),state=document.querySelector('#state'),openLink=document.querySelector('#open'),refreshButton=document.querySelector('#refresh');
+const qr=document.querySelector('#qr'),state=document.querySelector('#state'),openLink=document.querySelector('#open'),refreshButton=document.querySelector('#refresh'),copyButton=document.querySelector('#copy');
+copyButton.onclick=async()=>{
+  if(!openLink.href)return;
+  const text=document.createElement('textarea');text.value=openLink.href;text.style.position='fixed';text.style.top='0';document.body.appendChild(text);text.select();
+  let copied=false;try{copied=document.execCommand('copy')}catch(_){}text.remove();
+  document.querySelector('#copyState').textContent=copied?'已复制，请切换到夸克浏览器，在地址栏粘贴并打开。':'请长按上面的官方授权链接，选择复制链接，再在夸克浏览器地址栏打开。';
+};
 let stopped=true,generation='',revision=0;
 function url(op,g){return E.replace('&op=','&op='+op)+(g?'&g='+encodeURIComponent(g):'')}
 async function refresh(){
   const current=++revision;stopped=true;generation='';refreshButton.disabled=true;
-  openLink.removeAttribute('href');qr.removeAttribute('src');state.textContent='正在生成二维码…';
+  openLink.removeAttribute('href');qr.removeAttribute('src');copyButton.disabled=true;document.querySelector('#copyState').textContent='';state.textContent='正在生成二维码…';
   try{
     const r=await fetch(url('start'));const j=await r.json();
     if(current!==revision)return;
     if(!j.url||!j.generation)throw new Error(j.message||'二维码生成失败');
-    generation=j.generation;openLink.href=j.url;qr.src=url('qr',generation)+'&t='+Date.now();
-    state.textContent='请打开上方链接确认授权，或用另一台设备扫码';stopped=false;
+    generation=j.generation;openLink.href=j.url;copyButton.disabled=false;qr.src=url('qr',generation)+'&t='+Date.now();
+    state.textContent='请在夸克浏览器打开官方授权链接，或用另一台设备扫码';stopped=false;
   }catch(e){if(current===revision)state.textContent=e.message}
   finally{if(current===revision)refreshButton.disabled=false}
 }
 refreshButton.onclick=refresh;
 document.querySelector('#logout').onclick=async()=>{
   ++revision;stopped=true;generation='';refreshButton.disabled=false;
-  openLink.removeAttribute('href');qr.removeAttribute('src');
+  openLink.removeAttribute('href');qr.removeAttribute('src');copyButton.disabled=true;document.querySelector('#copyState').textContent='';
   try{await fetch(url('logout'));state.textContent='已退出本机登录'}catch(e){state.textContent='退出失败，请重试'}
 };
 async function poll(){
   if(!stopped&&generation){const current=revision,g=generation;
     try{const r=await fetch(url('status',g));const j=await r.json();
-      if(current===revision&&g===generation){state.textContent=j.message;if(['ok','refresh','superseded'].indexOf(j.state)>=0)stopped=true}
+      if(current===revision&&g===generation){state.textContent=j.message;if(['ok','refresh','superseded'].indexOf(j.state)>=0){stopped=true;copyButton.disabled=true;openLink.removeAttribute('href');qr.removeAttribute('src');document.querySelector('#copyState').textContent=''}}
     }catch(e){if(current===revision)state.textContent='请求失败，请确认 OK影视仍在打开'}
   }
   setTimeout(poll,2500);
@@ -392,8 +401,15 @@ refresh();setTimeout(poll,2500);
 }
 function proxy(params) {
   begin();
-  const headers = json({ 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
+  const headers = json({ 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY', 'Referrer-Policy': 'no-referrer' });
   try {
+    if (params.op === 'entry') {
+      // A short, stable entry URL for this device. LAN access still requires the private nonce.
+      if (!/^(?:127\.0\.0\.1|localhost)(?::\d+)?$/i.test(String(params.host || ''))) return [403, 'text/plain; charset=utf-8', '请在运行 OK影视的同一部手机上打开此地址。', headers];
+      const origin = String(params.origin || '');
+      if (origin && origin !== 'http://' + params.host) return [403, 'text/plain; charset=utf-8', '请在浏览器地址栏直接打开登录页面。', headers];
+      return [200, 'text/html; charset=utf-8', loginHtml(authNonce()), headers];
+    }
     if (!checkNonce(params)) return [403, 'text/plain; charset=utf-8', '授权页已过期，请在 OK影视重新打开“夸克登录与状态”。', headers];
     if (params.op === 'login') return [200, 'text/html; charset=utf-8', loginHtml(params.k), headers];
     if (params.op === 'start') {

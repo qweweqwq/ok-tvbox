@@ -23,16 +23,17 @@ https://github.com/okcaptain/TV/blob/release/quickjs/src/main/java/com/fongmi/qu
 360 https://360zy.com/
 央视 https://tv.cctv.com/
 
-夸克登录修复：官方网页二维码状态查询改用浏览器请求头，修复生成后立即报告过期的问题；刷新图片与状态绑定同一代二维码，旧响应不再覆盖新二维码。新入口key和文件名避开旧JS实例缓存。
-最终部署源quark-login.js已通过实际官方CAS联网检查（8次请求）：原生详情生成二维码、连续等待扫码查询、刷新后等待状态正常；旧二维码请求不会查询新二维码。证据work/quark_fix/root/live_deployed_report.json。
-quark.js与quark-login.js各15项离线检查通过，覆盖刷新响应竞争、二维码过期、退出登录和原生图文状态一致；原有登录及播放模拟流程也通过。账号授权和媒体播放仍未在用户5.1.5设备实机验证，不能列为已测通播放源。登录信息只保存在设备本地。
+夸克网页登录入口：二维码不再仅依靠手机播放器封面显示，改由独立本机HTML页面展示；详情第一行提供短本机地址，登录说明不自动执行空播放选集。跨设备电视方式保留带nonce的局域网地址。官方授权链接须在已登录的夸克浏览器打开，普通浏览器可能跳转下载页。
+最终部署源quark-web.js通过实际官方CAS联网检查（8次请求）：详情生成二维码、连续等待扫码查询、刷新后等待状态正常；旧二维码请求不查询新二维码。证据work/quark_fix/root/live_web_report.json。
+本机网页25项离线真实脚本检查通过：本机Host、跨站Origin与私有nonce边界，刷新响应竞争、二维码过期、退出和复制授权链接均通过。使用真实Chrome在390x844手机尺寸打开源脚本提供的本机网页，PNG解码、完整显示、等待状态、刷新和退出6项通过；此显示测试的CAS响应为模拟数据。证据work/quark_fix/ui/web_entry_test.json与work/quark_fix/root/browser_display_report.json。
+原有授权存储、转存与播放模拟流程仍通过。真实账号授权和媒体播放未在用户5.1.5设备实机验证，不能列为已测通播放源。登录信息只保存在设备本地。
 
 限制：当前机器的网络抽样、脚本回放和匿名公网可读性核验，不等同你的Android版本实机测试或所有影片长期可用性。
 
 文件校验值（SHA-256）
-config.json: 34979a006dda78e9e929bf0e9aeefc308d90ef170ae1b5c5ba8554889fe8441c
-resources.js: 3675f3faf9ae0417d5b0db1252123bb00bd4d20a519f74406bf6efcb8e5c8eae
+config.json: 93428c6fc4df74dd1ebbc81b63db0465c5720670b60de7d4644718866a711ebc
 cctv.js: 8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2
-quark-login.js: 72851c95c762f2cb238322ab6c5d6bd78698f8056abbb3413b54dcd918cf5478
-quark.js: 196dfde2d22504fd792edb75b75e3a193c366bb9135bebaf1da93785f57b8c2b
+resources.js: 3675f3faf9ae0417d5b0db1252123bb00bd4d20a519f74406bf6efcb8e5c8eae
+quark.js: f2a2f7326450f8982f264b0f6f5d72d9399726c46db808e50ef48b1965389e06
+quark-web.js: c24a8d6f8af477937f9f52f14c17d19b9246f9f08c1dea802ac3e44ff80f176c
 qr.js: bc22d1cc06f2157fe927926d12671b4ad468ab17f997dcb5b5326a72c755624e
