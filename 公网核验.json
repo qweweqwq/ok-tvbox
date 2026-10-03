@@ -1,18 +1,18 @@
 {
-  "verified_at": "2026-10-02T22:31:54.784031+08:00",
+  "verified_at": "2026-10-03T12:12:58.019555+08:00",
   "repository": "https://github.com/qweweqwq/ok-tvbox",
-  "config_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json",
-  "refresh_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=20261002-quark2",
+  "config_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web4",
+  "refresh_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web4",
   "refresh_status": 200,
   "refresh_identical_to_local": true,
   "passed": true,
   "files": [
     {
       "file": "config.json",
-      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=quark-web4",
       "status": 200,
-      "bytes": 21203,
-      "sha256": "34979a006dda78e9e929bf0e9aeefc308d90ef170ae1b5c5ba8554889fe8441c",
+      "bytes": 21201,
+      "sha256": "656d73453a8cd93ed1ad21f2a48e56d0e445098453dfb1bba2b7652fcc560253",
       "identical_to_local": true,
       "authentication_required": false
     },
@@ -35,20 +35,11 @@
       "authentication_required": false
     },
     {
-      "file": "quark-login.js",
-      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/quark-login.js",
+      "file": "quark-web4.js",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/quark-web4.js",
       "status": 200,
-      "bytes": 27869,
-      "sha256": "72851c95c762f2cb238322ab6c5d6bd78698f8056abbb3413b54dcd918cf5478",
-      "identical_to_local": true,
-      "authentication_required": false
-    },
-    {
-      "file": "quark.js",
-      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/quark.js",
-      "status": 200,
-      "bytes": 27866,
-      "sha256": "196dfde2d22504fd792edb75b75e3a193c366bb9135bebaf1da93785f57b8c2b",
+      "bytes": 30271,
+      "sha256": "95acbdaf15e5fdc7383352cc295f59e21aa9480844d157b30bad449bbd37579b",
       "identical_to_local": true,
       "authentication_required": false
     },
