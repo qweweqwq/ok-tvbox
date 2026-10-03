@@ -1,3 +1,6 @@
+https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=20261002-quark2
+
+原接口地址仍可使用：
 https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json
 
 仓库：

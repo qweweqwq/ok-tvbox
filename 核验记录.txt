@@ -23,13 +23,16 @@ https://github.com/okcaptain/TV/blob/release/quickjs/src/main/java/com/fongmi/qu
 360 https://360zy.com/
 央视 https://tv.cctv.com/
 
-夸克：自写JS、只在设备本地保存登录状态。无实际账号完成扫码和播放验证，不能列为已测通播放源。公开搜索及官方获取QR token的无账号阶段、mock流程可单独测试，详见夸克说明。
+夸克登录修复：官方网页二维码状态查询改用浏览器请求头，修复生成后立即报告过期的问题；刷新图片与状态绑定同一代二维码，旧响应不再覆盖新二维码。新入口key和文件名避开旧JS实例缓存。
+最终部署源quark-login.js已通过实际官方CAS联网检查（8次请求）：原生详情生成二维码、连续等待扫码查询、刷新后等待状态正常；旧二维码请求不会查询新二维码。证据work/quark_fix/root/live_deployed_report.json。
+quark.js与quark-login.js各15项离线检查通过，覆盖刷新响应竞争、二维码过期、退出登录和原生图文状态一致；原有登录及播放模拟流程也通过。账号授权和媒体播放仍未在用户5.1.5设备实机验证，不能列为已测通播放源。登录信息只保存在设备本地。
 
 限制：当前机器的网络抽样、脚本回放和匿名公网可读性核验，不等同你的Android版本实机测试或所有影片长期可用性。
 
 文件校验值（SHA-256）
-config.json: 38f15bdcacb8a7b1029c8e52605f66fb7db28495751ed4a44bfbda3b516d4efa
-cctv.js: 8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2
+config.json: 34979a006dda78e9e929bf0e9aeefc308d90ef170ae1b5c5ba8554889fe8441c
 resources.js: 3675f3faf9ae0417d5b0db1252123bb00bd4d20a519f74406bf6efcb8e5c8eae
-quark.js: 7628fc14446486f6346ea1c66b3d5b675a9d02908754b3be4560e7759cf49a7c
+cctv.js: 8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2
+quark-login.js: 72851c95c762f2cb238322ab6c5d6bd78698f8056abbb3413b54dcd918cf5478
+quark.js: 196dfde2d22504fd792edb75b75e3a193c366bb9135bebaf1da93785f57b8c2b
 qr.js: bc22d1cc06f2157fe927926d12671b4ad468ab17f997dcb5b5326a72c755624e

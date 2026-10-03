@@ -1,24 +1,18 @@
 {
-  "verified_at": "2026-10-02T22:01:48.620763+08:00",
+  "verified_at": "2026-10-02T22:31:54.784031+08:00",
   "repository": "https://github.com/qweweqwq/ok-tvbox",
   "config_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json",
+  "refresh_url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json?v=20261002-quark2",
+  "refresh_status": 200,
+  "refresh_identical_to_local": true,
   "passed": true,
   "files": [
     {
       "file": "config.json",
       "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/config.json",
       "status": 200,
-      "bytes": 21202,
-      "sha256": "38f15bdcacb8a7b1029c8e52605f66fb7db28495751ed4a44bfbda3b516d4efa",
-      "identical_to_local": true,
-      "authentication_required": false
-    },
-    {
-      "file": "cctv.js",
-      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/cctv.js",
-      "status": 200,
-      "bytes": 12330,
-      "sha256": "8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2",
+      "bytes": 21203,
+      "sha256": "34979a006dda78e9e929bf0e9aeefc308d90ef170ae1b5c5ba8554889fe8441c",
       "identical_to_local": true,
       "authentication_required": false
     },
@@ -32,11 +26,29 @@
       "authentication_required": false
     },
     {
+      "file": "cctv.js",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/cctv.js",
+      "status": 200,
+      "bytes": 12330,
+      "sha256": "8381bf18c9536899d1fb6a01573afaeb76b099329655e8e18f4fb5d43aad17f2",
+      "identical_to_local": true,
+      "authentication_required": false
+    },
+    {
+      "file": "quark-login.js",
+      "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/quark-login.js",
+      "status": 200,
+      "bytes": 27869,
+      "sha256": "72851c95c762f2cb238322ab6c5d6bd78698f8056abbb3413b54dcd918cf5478",
+      "identical_to_local": true,
+      "authentication_required": false
+    },
+    {
       "file": "quark.js",
       "url": "https://raw.githubusercontent.com/qweweqwq/ok-tvbox/main/quark.js",
       "status": 200,
-      "bytes": 25402,
-      "sha256": "7628fc14446486f6346ea1c66b3d5b675a9d02908754b3be4560e7759cf49a7c",
+      "bytes": 27866,
+      "sha256": "196dfde2d22504fd792edb75b75e3a193c366bb9135bebaf1da93785f57b8c2b",
       "identical_to_local": true,
       "authentication_required": false
     },
